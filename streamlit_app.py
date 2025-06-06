@@ -127,19 +127,19 @@ race_options = [
 ]
 
 # BRI: از ۱٫۳۱۲ تا ۲۲٫۹۸
-BRI = st.sidebar.number_input("BRI (1.31 - 22.98)", min_value=1.312, max_value=22.98, value=5.88)
+BRI = st.sidebar.number_input("BRI (4 - 18)", min_value=1.312, max_value=22.98, value=5.88)
 
 # سن: از ۱۸ تا ۵۹
-age = st.sidebar.number_input("Age (18 - 59)", min_value=18, max_value=59, value=30)
+age = st.sidebar.number_input("Age (18 - 45)", min_value=18, max_value=59, value=30)
 
 # کلسترول کل: از ۸۴ تا ۴۴۶
-total_cholesterol = st.sidebar.number_input("Total Cholesterol (84 - 446)", min_value=84, max_value=446, value=185)
+total_cholesterol = st.sidebar.number_input("Total Cholesterol (85 - 450)", min_value=84, max_value=446, value=185)
 
 # تری گلیسرید: از ۱۰ تا ۸۷۶
-triglyceride = st.sidebar.number_input("Triglyceride (10 - 876)", min_value=10, max_value=876, value=94)
+triglyceride = st.sidebar.number_input("Triglyceride (30 - 360)", min_value=10, max_value=876, value=94)
 
 # HOMA-IR: از ۰٫۲۲ تا ۴۲٫۲
-HOMA_IR = st.sidebar.number_input("HOMA-IR (0.22 - 42.2)", min_value=0.22, max_value=42.2, value=3.83)
+HOMA_IR = st.sidebar.number_input("HOMA-IR (1 - 18)", min_value=0.22, max_value=42.2, value=3.83)
 
 # انتخاب نژاد
 race = st.sidebar.selectbox("Race", race_options)

@@ -40,14 +40,12 @@ st.title('🤖🤰 Machine Learning Models APP for Advanced Predicting Infertili
 st.info('Predict the **Infertility** based on health data using NNet and Logistic Regression.')
 
 # ---------- Load Data ----------
-
 @st.cache_data
 def load_data():
     url = "https://github.com/Bahsobi/BRI_project/raw/refs/heads/main/selected_data.xlsx"
     return pd.read_excel(url)
 
 df = load_data()
-
 
 # ---------- Rename Columns ----------
 df.rename(columns={

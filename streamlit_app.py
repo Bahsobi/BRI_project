@@ -51,13 +51,13 @@ df = load_data()
 df.rename(columns={
     'AGE': 'age',
     'Race': 'race',
-    'BMI': 'BMI',  # Remains the same
+    'BMI': 'total_cholesterol',  # Changed BMI to Total Cholesterol
     'Waist Circumference': 'waist_circumference',
     'Hypertension (%)': 'hypertension',
     'Smoked at least 100 cigarettes': 'smoked_100_cigarettes',
     'Ever had a drink of any kind of alcohol v1': 'alcohol_consumption',
     'diabetes': 'diabetes',
-    'Total Cholesterol': 'total_cholesterol',
+    'Total Cholesterol': 'total_cholesterol',  # This now refers to Total Cholesterol
     'Triglyceride': 'triglyceride',
     'Hyperlipidemia': 'hyperlipidemia',
     'Fasting Glucose (mg/dL)': 'fasting_glucose',
@@ -67,7 +67,7 @@ df.rename(columns={
 }, inplace=True)
 
 # ---------- Features & Target ----------
-features = ['BRI', 'age', 'BMI', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes']
+features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes']  # Changed BMI to Total Cholesterol
 target = 'infertility'
 df = df[features + [target]].dropna()
 
@@ -76,7 +76,7 @@ y = df[target]
 
 # ---------- Preprocessing ----------
 categorical_features = ['race', 'hyperlipidemia', 'diabetes']
-numerical_features = ['BRI', 'age', 'BMI', 'HOMA_IR']
+numerical_features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR']  # Changed BMI to Total Cholesterol
 
 preprocessor = ColumnTransformer([
     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
@@ -127,7 +127,7 @@ race_options = [
 
 BRI = st.sidebar.number_input("BRI (8.04 - 14.14)", min_value=8.04, max_value=14.14, value=10.0)
 age = st.sidebar.number_input("Age (18 - 59)", min_value=18, max_value=59, value=30)
-BMI = st.sidebar.number_input("BMI (14.6 - 82.0)", min_value=14.6, max_value=82.0, value=25.0)
+total_cholesterol = st.sidebar.number_input("Total Cholesterol (150 - 300)", min_value=150, max_value=300, value=200.0)  # Changed BMI to Total Cholesterol
 HOMA_IR = st.sidebar.number_input("HOMA-IR (0.22 - 34.1)", min_value=0.22, max_value=34.1, value=2.0)
 race = st.sidebar.selectbox("Race", race_options)
 hyperlipidemia = st.sidebar.selectbox("Hyperlipidemia", ['Yes', 'No'])
@@ -137,7 +137,7 @@ diabetes = st.sidebar.selectbox("Diabetes", ['Yes', 'No'])
 user_input = pd.DataFrame([{
     'BRI': BRI,
     'age': age,
-    'BMI': BMI,
+    'total_cholesterol': total_cholesterol,  # Changed BMI to Total Cholesterol
     'HOMA_IR': HOMA_IR,
     'race': race,
     'hyperlipidemia': hyperlipidemia,

@@ -63,11 +63,12 @@ df.rename(columns={
     'diabetes': 'diabetes',
     'Female infertility': 'infertility',
     'BRI': 'BRI',  # استفاده از BRI
-    'HOMA-IR': 'HOMA_IR'
+    'HOMA-IR': 'HOMA_IR',
+    'Triglyceride': 'triglyceride'  # اضافه کردن Triglyceride
 }, inplace=True)
 
 # ---------- Features & Target ----------
-features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes']
+features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes', 'triglyceride']  # اضافه کردن Triglyceride به فیچرها
 target = 'infertility'
 df = df[features + [target]].dropna()
 
@@ -76,7 +77,7 @@ y = df[target]
 
 # ---------- Preprocessing ----------
 categorical_features = ['race', 'hyperlipidemia', 'diabetes']
-numerical_features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR']
+numerical_features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'triglyceride']  # اضافه کردن Triglyceride به ویژگی‌های عددی
 
 preprocessor = ColumnTransformer([
     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
@@ -125,12 +126,28 @@ race_options = [
     "Non-Hispanic Black", "Non-Hispanic Asian", "Other Race - Including Multi-Racial"
 ]
 
-BRI = st.sidebar.number_input("BRI (8.04 - 14.14)", min_value=8.04, max_value=14.14, value=10.0)  # تغییر به BRI
+# BRI: از ۱٫۳۱۲ تا ۲۲٫۹۸
+BRI = st.sidebar.number_input("BRI (1.31 - 22.98)", min_value=1.312, max_value=22.98, value=5.88)
+
+# سن: از ۱۸ تا ۵۹
 age = st.sidebar.number_input("Age (18 - 59)", min_value=18, max_value=59, value=30)
-total_cholesterol = st.sidebar.number_input("Total Cholesterol (140 - 300)", min_value=140, max_value=300, value=200)  # تغییر به Total Cholesterol
-HOMA_IR = st.sidebar.number_input("HOMA-IR (0.22 - 34.1)", min_value=0.22, max_value=34.1, value=2.0)
+
+# کلسترول کل: از ۸۴ تا ۴۴۶
+total_cholesterol = st.sidebar.number_input("Total Cholesterol (84 - 446)", min_value=84, max_value=446, value=185)
+
+# تری گلیسرید: از ۱۰ تا ۸۷۶
+triglyceride = st.sidebar.number_input("Triglyceride (10 - 876)", min_value=10, max_value=876, value=94)
+
+# HOMA-IR: از ۰٫۲۲ تا ۴۲٫۲
+HOMA_IR = st.sidebar.number_input("HOMA-IR (0.22 - 42.2)", min_value=0.22, max_value=42.2, value=3.83)
+
+# انتخاب نژاد
 race = st.sidebar.selectbox("Race", race_options)
+
+# هایپرلیپیدمی: بله یا خیر
 hyperlipidemia = st.sidebar.selectbox("Hyperlipidemia", ['Yes', 'No'])
+
+# دیابت: بله یا خیر
 diabetes = st.sidebar.selectbox("Diabetes", ['Yes', 'No'])
 
 # ---------- Prediction ----------
@@ -138,6 +155,7 @@ user_input = pd.DataFrame([{
     'BRI': BRI,
     'age': age,
     'total_cholesterol': total_cholesterol,  # تغییر به total_cholesterol
+    'triglyceride': triglyceride,  # اضافه کردن Triglyceride
     'HOMA_IR': HOMA_IR,
     'race': race,
     'hyperlipidemia': hyperlipidemia,

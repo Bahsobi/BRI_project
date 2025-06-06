@@ -16,10 +16,17 @@ st.markdown(
     """
     <style>
         .stApp {
-            background-color: #C8A2D4;  /* Lilac color */
+            background-color: #FFEB3B;  /* زرد روشن */
         }
         .stSidebar {
-            background-color: #D1A7D5;  /* A lighter lilac color for sidebar */
+            background-color: #FFD700;  /* زرد طلایی */
+        }
+        .stButton>button {
+            background-color: #FFF8E1;  /* زرد کرم برای دکمه‌ها */
+            color: black;
+        }
+        .stTextInput>div>input {
+            background-color: #FFF8E1;  /* زرد کرم برای فیلد ورودی */
         }
     </style>
     """,

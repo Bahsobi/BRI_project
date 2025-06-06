@@ -16,10 +16,10 @@ st.markdown(
     """
     <style>
         .stApp {
-            background-color: #FFA500;  /* Soft Orange color */
+            background-color: #C8A2D4;  /* Lilac color */
         }
         .stSidebar {
-            background-color: #FFD700;  /* Lighter yellow-orange color for sidebar */
+            background-color: #D1A7D5;  /* A lighter lilac color for sidebar */
         }
     </style>
     """,
@@ -40,34 +40,29 @@ st.title('🤖🤰 Machine Learning Models APP for Advanced Predicting Infertili
 st.info('Predict the **Infertility** based on health data using NNet and Logistic Regression.')
 
 # ---------- Load Data ----------
+
 @st.cache_data
 def load_data():
-    url = "https://github.com/Bahsobi/BRI_project/raw/refs/heads/main/processed_data_output.xlsx"
+    url = "https://github.com/Bahsobi/BRI_project/raw/refs/heads/main/selected_data.xlsx"
     return pd.read_excel(url)
 
 df = load_data()
+
 
 # ---------- Rename Columns ----------
 df.rename(columns={
     'AGE': 'age',
     'Race': 'race',
-    'BMI': 'total_cholesterol',  # Changed BMI to Total Cholesterol
-    'Waist Circumference': 'waist_circumference',
-    'Hypertension (%)': 'hypertension',
-    'Smoked at least 100 cigarettes': 'smoked_100_cigarettes',
-    'Ever had a drink of any kind of alcohol v1': 'alcohol_consumption',
-    'diabetes': 'diabetes',
-    'Total Cholesterol': 'total_cholesterol',  # This now refers to Total Cholesterol
-    'Triglyceride': 'triglyceride',
+    'Total Cholesterol': 'total_cholesterol',  # تغییر نام به total_cholesterol
     'Hyperlipidemia': 'hyperlipidemia',
-    'Fasting Glucose (mg/dL)': 'fasting_glucose',
-    'HOMA-IR': 'HOMA_IR',
-    'BRI': 'BRI',  # Remains the same
-    'Female infertility': 'infertility'
+    'diabetes': 'diabetes',
+    'Female infertility': 'infertility',
+    'BRI': 'BRI',  # استفاده از BRI
+    'HOMA-IR': 'HOMA_IR'
 }, inplace=True)
 
 # ---------- Features & Target ----------
-features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes']  # Changed BMI to Total Cholesterol
+features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR', 'race', 'hyperlipidemia', 'diabetes']
 target = 'infertility'
 df = df[features + [target]].dropna()
 
@@ -76,7 +71,7 @@ y = df[target]
 
 # ---------- Preprocessing ----------
 categorical_features = ['race', 'hyperlipidemia', 'diabetes']
-numerical_features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR']  # Changed BMI to Total Cholesterol
+numerical_features = ['BRI', 'age', 'total_cholesterol', 'HOMA_IR']
 
 preprocessor = ColumnTransformer([
     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
@@ -125,9 +120,9 @@ race_options = [
     "Non-Hispanic Black", "Non-Hispanic Asian", "Other Race - Including Multi-Racial"
 ]
 
-BRI = st.sidebar.number_input("BRI (8.04 - 14.14)", min_value=8.04, max_value=14.14, value=10.0)
+BRI = st.sidebar.number_input("BRI (8.04 - 14.14)", min_value=8.04, max_value=14.14, value=10.0)  # تغییر به BRI
 age = st.sidebar.number_input("Age (18 - 59)", min_value=18, max_value=59, value=30)
-total_cholesterol = st.sidebar.number_input("Total Cholesterol (150 - 300)", min_value=150, max_value=300, value=200.0)  # Changed BMI to Total Cholesterol
+total_cholesterol = st.sidebar.number_input("Total Cholesterol (140 - 300)", min_value=140, max_value=300, value=200)  # تغییر به Total Cholesterol
 HOMA_IR = st.sidebar.number_input("HOMA-IR (0.22 - 34.1)", min_value=0.22, max_value=34.1, value=2.0)
 race = st.sidebar.selectbox("Race", race_options)
 hyperlipidemia = st.sidebar.selectbox("Hyperlipidemia", ['Yes', 'No'])
@@ -137,7 +132,7 @@ diabetes = st.sidebar.selectbox("Diabetes", ['Yes', 'No'])
 user_input = pd.DataFrame([{
     'BRI': BRI,
     'age': age,
-    'total_cholesterol': total_cholesterol,  # Changed BMI to Total Cholesterol
+    'total_cholesterol': total_cholesterol,  # تغییر به total_cholesterol
     'HOMA_IR': HOMA_IR,
     'race': race,
     'hyperlipidemia': hyperlipidemia,
@@ -174,15 +169,15 @@ st.dataframe(importance_df)
 # ---------- Plot Feature Importances ----------
 st.subheader("📈 Bar Chart: Feature Importances")
 fig, ax = plt.subplots()
-sns.barplot(x='Importance', y='Feature', data=importance_df, ax=ax)
+sns.barplot(x='Importance', y='Feature', data=importance_df, ax=ax, color="#FF8C00")  # رنگ نارنجی کم رنگ
 st.pyplot(fig)
 
 # ---------- Quartile Odds Ratio for BRI ----------
-st.subheader("📉 Odds Ratios for Infertility by BRI Quartiles")
-df_bri = df[['BRI', 'infertility']].copy()
-df_bri['BRI_quartile'] = pd.qcut(df_bri['BRI'], 4, labels=['Q1', 'Q2', 'Q3', 'Q4'])
+st.subheader("📉 Odds Ratios for Infertility by BRI Quartiles")  # تغییر به BRI
+df_bri = df[['BRI', 'infertility']].copy()  # تغییر به BRI
+df_bri['BRI_quartile'] = pd.qcut(df_bri['BRI'], 4, labels=['Q1', 'Q2', 'Q3', 'Q4'])  # تغییر به BRI
 
-X_q = pd.get_dummies(df_bri['BRI_quartile'], drop_first=True)
+X_q = pd.get_dummies(df_bri['BRI_quartile'], drop_first=True)  # تغییر به BRI
 X_q = sm.add_constant(X_q).astype(float)
 y_q = df_bri['infertility'].astype(float)
 
@@ -205,7 +200,7 @@ st.dataframe(or_df.set_index('Quartile').style.format("{:.2f}"))
 fig3, ax3 = plt.subplots()
 sns.pointplot(data=or_df, x='Quartile', y='Odds Ratio', join=False, capsize=0.2, errwidth=1.5)
 ax3.axhline(1, linestyle='--', color='gray')
-ax3.set_title("Odds Ratios for Infertility by BRI Quartiles")
+ax3.set_title("Odds Ratios for Infertility by BRI Quartiles")  # تغییر به BRI
 st.pyplot(fig3)
 
 # ---------- Summary ----------
